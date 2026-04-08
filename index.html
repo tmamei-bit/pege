@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PM週報ダッシュボード</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  /* ---- Header ---- */
+  .header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 28px 24px 20px;
+    text-align: center;
+  }
+  .header h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .header .subtitle { font-size: 0.9rem; opacity: 0.85; }
+
+  /* ---- Controls ---- */
+  .controls {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .controls select {
+    padding: 8px 14px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+  }
+  .controls select:focus { border-color: #667eea; outline: none; }
+  .controls .filter-btn {
+    padding: 6px 14px;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+  }
+  .controls .filter-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+  }
+
+  /* ---- Summary Bar ---- */
+  .summary-bar {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .summary-card .num { font-size: 2rem; font-weight: bold; color: #667eea; }
+  .summary-card .label { font-size: 0.8rem; color: #888; margin-top: 2px; }
+
+  /* ---- Chart Section ---- */
+  .chart-section {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+  .chart-container {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .chart-container h3 { margin-bottom: 16px; font-size: 1rem; color: #555; }
+  .chart-wrapper { position: relative; height: 300px; }
+
+  /* ---- Cards ---- */
+  .cards {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 5px solid #667eea;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+  .card.has-escalation { border-left-color: #e53e3e; }
+  .card.has-issue { border-left-color: #ed8936; }
+  .card.all-good { border-left-color: #38a169; }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .card-header h3 { font-size: 1.05rem; }
+  .card-type {
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: #f0f2f5;
+    color: #666;
+  }
+
+  .ksf-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    background: #f7f8fc;
+    border-radius: 8px;
+  }
+  .ksf-value { font-size: 1.8rem; font-weight: bold; color: #667eea; }
+  .ksf-unit { font-size: 0.9rem; color: #667eea; }
+  .ksf-label { font-size: 0.82rem; color: #888; margin-left: auto; }
+
+  .section-title {
+    font-size: 0.78rem;
+    font-weight: bold;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 12px 0 6px;
+  }
+
+  .action-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: bold;
+  }
+  .action-badge.done { background: #c6f6d5; color: #22543d; }
+  .action-badge.not-done { background: #fed7d7; color: #9b2c2c; }
+
+  .action-detail {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 4px;
+  }
+
+  .voices {
+    list-style: none;
+    padding: 0;
+  }
+  .voices li {
+    font-size: 0.85rem;
+    padding: 4px 0;
+    color: #555;
+  }
+  .voices li::before {
+    content: '\201C';
+    color: #667eea;
+    font-weight: bold;
+    margin-right: 2px;
+  }
+  .voices li::after { content: '\201D'; color: #667eea; font-weight: bold; }
+
+  .issue-box, .escalation-box {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+  .issue-box { background: #fffaf0; border: 1px solid #ed8936; color: #7b341e; }
+  .escalation-box { background: #fff5f5; border: 1px solid #e53e3e; color: #9b2c2c; font-weight: bold; }
+
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 1.1rem;
+  }
+  .setup-notice {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 24px;
+    background: #fffaf0;
+    border: 2px solid #ed8936;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #7b341e;
+    display: none;
+  }
+  .setup-notice code {
+    background: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 768px) {
+    .cards { grid-template-columns: 1fr; }
+    .chart-wrapper { height: 220px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>PM週報ダッシュボード</h1>
+  <div class="subtitle" id="period">読み込み中...</div>
+</div>
+
+<div class="controls">
+  <select id="weekSelect"></select>
+  <div class="filter-btn active" data-filter="all">すべて</div>
+  <div class="filter-btn" data-filter="テーマ型">テーマ型</div>
+  <div class="filter-btn" data-filter="講師キャラ型">講師キャラ型</div>
+  <div class="filter-btn" data-filter="escalation">エスカレあり</div>
+</div>
+
+<div class="summary-bar" id="summaryBar"></div>
+
+<div class="chart-section">
+  <div class="chart-container">
+    <h3>KSF実績（ゼミ別）</h3>
+    <div class="chart-wrapper">
+      <canvas id="ksfChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="cards" id="cards">
+  <div class="loading">読み込み中...</div>
+</div>
+
+<div class="setup-notice" id="setupNotice">
+  <strong>GAS WebアプリURLが未設定です</strong><br><br>
+  <code>index.html</code> 内の <code>GAS_URL</code> を<br>
+  GASデプロイ後のWebアプリURLに書き換えてください。
+</div>
+
+<script>
+(function() {
+  // ============================================
+  // ★ ここにGASウェブアプリのURLを設定 ★
+  // GASでデプロイ後に取得できるURLを貼り付けてください
+  // ============================================
+  const GAS_URL = '';
+
+  let allData = null;
+  let currentFilter = 'all';
+  let ksfChart = null;
+
+  async function init() {
+    if (!GAS_URL) {
+      document.getElementById('cards').innerHTML = '';
+      document.getElementById('period').textContent = 'セットアップ待ち';
+      document.getElementById('setupNotice').style.display = 'block';
+      return;
+    }
+
+    // 週一覧を取得
+    const index = await fetchGAS('list');
+    const sel = document.getElementById('weekSelect');
+    index.weeks.forEach(w => {
+      const opt = document.createElement('option');
+      opt.value = w;
+      opt.textContent = w;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener('change', () => loadWeek(sel.value));
+    if (index.weeks.length > 0) {
+      await loadWeek(index.weeks[0]);
+    }
+  }
+
+  async function fetchGAS(action, week) {
+    let url = `${GAS_URL}?action=${action}`;
+    if (week) url += `&week=${encodeURIComponent(week)}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`API error: ${res.status}`);
+    return res.json();
+  }
+
+  async function loadWeek(week) {
+    allData = await fetchGAS('week', week);
+    document.getElementById('period').textContent = allData.period;
+    render();
+  }
+
+  // --- Filter buttons ---
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      render();
+    });
+  });
+
+  function filterSeminars() {
+    if (!allData || !allData.seminars) return [];
+    return allData.seminars.filter(s => {
+      if (currentFilter === 'all') return true;
+      if (currentFilter === 'escalation') return s.escalation && s.escalation.trim();
+      return s.type === currentFilter;
+    });
+  }
+
+  function render() {
+    const seminars = filterSeminars();
+    renderSummary(seminars);
+    renderChart(seminars);
+    renderCards(seminars);
+  }
+
+  function renderSummary(seminars) {
+    const total = seminars.length;
+    const actionDone = seminars.filter(s => s.recommended_action.done).length;
+    const hasIssue = seminars.filter(s => s.issues && s.issues.trim()).length;
+    const hasEsc = seminars.filter(s => s.escalation && s.escalation.trim()).length;
+
+    document.getElementById('summaryBar').innerHTML = `
+      <div class="summary-card"><div class="num">${total}</div><div class="label">対象ゼミ数</div></div>
+      <div class="summary-card"><div class="num">${actionDone}/${total}</div><div class="label">推奨行動 実施</div></div>
+      <div class="summary-card"><div class="num" style="color:#ed8936">${hasIssue}</div><div class="label">課題あり</div></div>
+      <div class="summary-card"><div class="num" style="color:#e53e3e">${hasEsc}</div><div class="label">エスカレあり</div></div>
+    `;
+  }
+
+  function renderChart(seminars) {
+    const ctx = document.getElementById('ksfChart').getContext('2d');
+    if (ksfChart) ksfChart.destroy();
+
+    const colors = seminars.map((_, i) => {
+      const hues = [250, 340, 150, 30, 200, 280, 50, 100, 310, 180, 60, 220];
+      return `hsl(${hues[i % hues.length]}, 65%, 60%)`;
+    });
+
+    ksfChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: seminars.map(s => s.name),
+        datasets: [{
+          label: 'KSF実績',
+          data: seminars.map(s => s.ksf.value),
+          backgroundColor: colors,
+          borderRadius: 6,
+          barThickness: 40
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const s = seminars[ctx.dataIndex];
+                return `${s.ksf.label}: ${s.ksf.value}${s.ksf.unit}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: { ticks: { font: { size: 11 }, maxRotation: 45 } },
+          y: { beginAtZero: true, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+  }
+
+  function renderCards(seminars) {
+    const container = document.getElementById('cards');
+    if (!seminars.length) {
+      container.innerHTML = '<div class="loading">該当するゼミがありません</div>';
+      return;
+    }
+
+    container.innerHTML = seminars.map(s => {
+      const hasEsc = s.escalation && s.escalation.trim();
+      const hasIssue = s.issues && s.issues.trim();
+      const cardClass = hasEsc ? 'has-escalation' : hasIssue ? 'has-issue' : 'all-good';
+
+      const voicesHtml = s.member_voices.length
+        ? `<ul class="voices">${s.member_voices.map(v => `<li>${esc(v)}</li>`).join('')}</ul>`
+        : '<span style="font-size:0.85rem;color:#999;">なし</span>';
+
+      return `
+        <div class="card ${cardClass}">
+          <div class="card-header">
+            <h3>${esc(s.name)}</h3>
+            <span class="card-type">${esc(s.type)}</span>
+          </div>
+          <div class="ksf-row">
+            <span class="ksf-value">${s.ksf.value}</span>
+            <span class="ksf-unit">${esc(s.ksf.unit)}</span>
+            <span class="ksf-label">${esc(s.ksf.label)}</span>
+          </div>
+          <div class="section-title">推奨行動</div>
+          <span class="action-badge ${s.recommended_action.done ? 'done' : 'not-done'}">
+            ${s.recommended_action.done ? '実施済' : '未実施'}
+          </span>
+          <div class="action-detail">${esc(s.recommended_action.detail)}</div>
+          <div class="section-title">会員の声</div>
+          ${voicesHtml}
+          ${hasIssue ? `<div class="section-title">今週の課題</div><div class="issue-box">${esc(s.issues)}</div>` : ''}
+          ${hasEsc ? `<div class="section-title">エスカレ事項</div><div class="escalation-box">${esc(s.escalation)}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  init().catch(err => {
+    document.getElementById('cards').innerHTML =
+      `<div class="loading" style="color:#e53e3e;">読み込みエラー: ${esc(err.message)}</div>`;
+  });
+})();
+</script>
+</body>
+</html>
