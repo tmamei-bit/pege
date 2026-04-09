@@ -136,6 +136,16 @@
   .ksf-unit { font-size: 0.9rem; color: #667eea; }
   .ksf-label { font-size: 0.82rem; color: #888; margin-left: auto; }
 
+  .members-row {
+    font-size: 0.9rem;
+    color: #555;
+    padding: 6px 14px;
+    margin-bottom: 10px;
+    background: #eef2ff;
+    border-radius: 8px;
+  }
+  .members-row strong { color: #667eea; font-size: 1.1rem; }
+
   .section-title {
     font-size: 0.78rem;
     font-weight: bold;
@@ -209,7 +219,7 @@
 
 <script>
 (function() {
-  const GAS_URL = 'https://script.google.com/a/macros/10xc.jp/s/AKfycbxHKdqAmMD8k9bRgwVwuKKhftVCe9ozzZAoXxB--DzTJ4BBZYALs4LW1CDGcoZoWUhT/exec';
+  const GAS_URL = 'https://script.google.com/a/macros/10xc.jp/s/AKfycbymJxjNoGiTzyNk6E9EBCgvDc5Bud7fQJhVOBqB00tLFRDBl8NW44-oUdAGU5HMaSbh/exec';
 
   let allData = null;
   let currentSeminar = 'all';
@@ -291,6 +301,7 @@
 
     document.getElementById('summaryBar').innerHTML = `
       <div class="summary-card"><div class="num">${total}</div><div class="label">対象ゼミ数</div></div>
+      <div class="summary-card"><div class="num">${seminars.reduce((a,s) => a + (s.members_count || 0), 0)}</div><div class="label">総在籍数</div></div>
       <div class="summary-card"><div class="num">${actionDone}/${total}</div><div class="label">推奨行動 実施</div></div>
       <div class="summary-card"><div class="num" style="color:#ed8936">${hasIssue}</div><div class="label">課題あり</div></div>
       <div class="summary-card"><div class="num" style="color:#e53e3e">${hasEsc}</div><div class="label">エスカレあり</div></div>
@@ -361,6 +372,7 @@
             <span class="ksf-unit">${esc(s.ksf.unit)}</span>
             <span class="ksf-label">${esc(s.ksf.label)}</span>
           </div>
+          ${s.members_count ? `<div class="members-row">👥 在籍 <strong>${s.members_count}</strong> 人</div>` : ''}
           <div class="section-title">推奨行動</div>
           <span class="action-badge ${s.recommended_action.done ? 'done' : 'not-done'}">
             ${s.recommended_action.done ? '実施済' : '未実施'}
