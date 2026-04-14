@@ -727,7 +727,7 @@ const pageConfig = {
 
 function navigateTo(pageId) {
   // Destroy existing charts
-  Chart.helpers.each(Chart.instances, (instance) => { instance.destroy(); });
+  Object.values(Chart.instances).forEach(instance => { instance.destroy(); });
 
   const config = pageConfig[pageId];
   if (!config) return;
