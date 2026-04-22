@@ -8,16 +8,16 @@
     :root {
       color-scheme: light;
       --ink: #202124;
-      --muted: #74718b;
+      --muted: #716c86;
       --line: #e4def7;
       --soft: #f7f4ff;
       --soft-green: #ecfbf3;
-      --panel: rgba(255, 255, 255, .94);
+      --panel: rgba(255, 255, 255, .95);
       --accent: #6d4de6;
-      --accent-2: #6f73ff;
       --accent-ink: #ffffff;
       --ok: #43c77c;
       --warn: #b45309;
+      --danger: #b91c1c;
       --shadow: 0 18px 50px rgba(62, 46, 117, .14);
     }
 
@@ -31,8 +31,8 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 18% 10%, rgba(111, 115, 255, .22), transparent 30%),
-        linear-gradient(135deg, #f5f1ff 0%, #f8fbff 52%, #eefaf4 100%);
+        radial-gradient(circle at 16% 12%, rgba(111, 115, 255, .2), transparent 32%),
+        linear-gradient(135deg, #f5f1ff 0%, #f8fbff 54%, #eefaf4 100%);
       letter-spacing: 0;
     }
 
@@ -55,7 +55,6 @@
       background: rgba(255, 255, 255, .72);
       color: var(--accent);
       font-weight: 700;
-      box-shadow: none;
     }
 
     .nav-pill.active {
@@ -81,6 +80,12 @@
       backdrop-filter: blur(10px);
     }
 
+    .hero,
+    .listing-copy,
+    section {
+      padding: 20px;
+    }
+
     .hero {
       padding: 24px;
     }
@@ -88,7 +93,6 @@
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
       min-height: 26px;
       padding: 0 10px;
       border-radius: 999px;
@@ -104,22 +108,17 @@
       line-height: 1.08;
     }
 
+    h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+    }
+
     .lead {
       max-width: 760px;
       margin: 0;
       color: var(--muted);
       font-size: 16px;
       line-height: 1.75;
-    }
-
-    .listing-copy {
-      padding: 16px;
-    }
-
-    .listing-copy h2,
-    section h2 {
-      margin: 0 0 14px;
-      font-size: 18px;
     }
 
     .mini-card {
@@ -178,11 +177,15 @@
       font-weight: 800;
     }
 
+    .mini-description,
+    .note {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
     .mini-description {
       margin: 10px 0 0;
-      color: #57536c;
       font-size: 13px;
-      line-height: 1.65;
     }
 
     .copy-list {
@@ -205,10 +208,6 @@
       align-items: start;
     }
 
-    section {
-      padding: 20px;
-    }
-
     label {
       display: block;
       margin: 14px 0 7px;
@@ -225,7 +224,7 @@
       background: #fff;
       color: var(--ink);
       font: inherit;
-      outline-color: var(--accent-2);
+      outline-color: var(--accent);
     }
 
     textarea {
@@ -237,8 +236,12 @@
 
     input,
     select {
-      height: 42px;
+      min-height: 42px;
       padding: 0 10px;
+    }
+
+    input[type="file"] {
+      padding: 9px 10px;
     }
 
     .row {
@@ -270,16 +273,14 @@
       color: var(--accent);
     }
 
-    button:focus-visible {
-      outline: 3px solid rgba(111, 115, 255, .25);
-      outline-offset: 2px;
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
     }
 
     .note {
       margin: 12px 0 0;
-      color: var(--muted);
       font-size: 12px;
-      line-height: 1.7;
     }
 
     .summary {
@@ -316,11 +317,12 @@
       overflow: auto;
       border: 1px solid var(--line);
       border-radius: 8px;
+      background: #fff;
     }
 
     table {
       width: 100%;
-      min-width: 720px;
+      min-width: 760px;
       border-collapse: collapse;
       font-size: 13px;
     }
@@ -345,6 +347,12 @@
       border-bottom: 0;
     }
 
+    .empty {
+      padding: 30px 16px;
+      color: var(--muted);
+      text-align: center;
+    }
+
     .badge {
       display: inline-flex;
       align-items: center;
@@ -360,6 +368,11 @@
     .low {
       background: #fff7ed;
       color: var(--warn);
+    }
+
+    .error {
+      color: var(--danger);
+      font-weight: 700;
     }
 
     .tabs {
@@ -425,7 +438,7 @@
       <div class="hero">
         <span class="eyebrow">その他 / 税金・確定申告関連</span>
         <h1>フリーランス経費分類AI</h1>
-        <p class="lead">レシートやカード明細を貼り付けると、会計ソフト入力や税理士共有に使いやすい形へ仮分類します。税務判断ではなく、整理・確認漏れ防止のための下準備ツールです。</p>
+        <p class="lead">レシートやカード明細を貼り付けるかCSVで読み込むと、会計ソフト入力や税理士共有に使いやすい形へ仮分類します。税務判断ではなく、整理・確認漏れ防止のための下準備ツールです。</p>
       </div>
 
       <aside class="listing-copy" aria-label="掲載カード用コピー">
@@ -440,20 +453,20 @@
           </div>
           <div class="mini-body">
             <span class="saving-amount">月1〜3時間短縮</span>
-            <p class="mini-description">レシート明細をAIで経費科目候補に仮分類。会計ソフト入力と税理士共有をラクに。</p>
+            <p class="mini-description">レシート明細を経費科目候補に仮分類。会計ソフト入力と税理士共有をラクに。</p>
           </div>
         </div>
         <div class="copy-list">
           <div><strong>タイトル:</strong> フリーランス経費分類AI</div>
           <div><strong>節約額:</strong> 月1〜3時間短縮</div>
-          <div><strong>短い説明:</strong> レシート明細をAIで経費科目候補に仮分類。会計ソフト入力と税理士共有をラクに。</div>
+          <div><strong>短い説明:</strong> レシート明細を経費科目候補に仮分類。会計ソフト入力と税理士共有をラクに。</div>
         </div>
       </aside>
     </header>
 
     <div class="grid">
       <section>
-        <h2>明細を貼り付け</h2>
+        <h2>明細を入力</h2>
         <div class="row">
           <div>
             <label for="business">業種</label>
@@ -476,21 +489,18 @@
           </div>
         </div>
 
-        <label for="items">明細</label>
-        <textarea id="items">2026/01/05 Amazon 参考書 3200
-2026/01/08 JR 取引先訪問 820
-2026/01/10 Zoom 月額 2200
-2026/01/12 カフェ 打ち合わせ 1460
-2026/01/15 ドコモ 通信費 6800
-2026/01/18 Adobe Creative Cloud 7280
-2026/01/20 コワーキングスペース 13200</textarea>
+        <label for="csvFile">CSVファイル</label>
+        <input id="csvFile" type="file" accept=".csv,text/csv">
+        <p class="note">CSVは「日付, 支払先, 内容, 金額」または「日付, 摘要, 金額」の形式に対応します。読み込んだ内容はブラウザ内だけで処理されます。</p>
+
+        <label for="items">明細貼り付け</label>
+        <textarea id="items" placeholder="例: 2026/01/10 Zoom 月額 2200&#10;例: 2026/01/12 カフェ 打ち合わせ 1460"></textarea>
 
         <div class="actions">
           <button id="classify">分類する</button>
-          <button class="secondary" id="sample">サンプルを戻す</button>
           <button class="secondary" id="clear">クリア</button>
         </div>
-        <p class="note">1行に「日付 支払先 内容 金額」の順で入れると精度が上がります。CSV貼り付けにも対応します。</p>
+        <p class="note">1行に「日付 支払先 内容 金額」の順で入れると分類しやすくなります。ここに入力した内容は外部送信されません。</p>
       </section>
 
       <section>
@@ -521,7 +531,9 @@
                 <th>確認メモ</th>
               </tr>
             </thead>
-            <tbody id="result"></tbody>
+            <tbody id="result">
+              <tr><td colspan="5"><div class="empty">明細を入力して「分類する」を押してください。</div></td></tr>
+            </tbody>
           </table>
         </div>
 
@@ -530,10 +542,10 @@
           <button class="tab" data-output="memo">税理士共有メモ</button>
           <button class="tab" data-output="prompt">AI確認プロンプト</button>
         </div>
-        <pre id="output"></pre>
+        <pre id="output">明細を分類すると、ここに出力が表示されます。</pre>
         <div class="actions">
-          <button class="secondary" id="copy">出力をコピー</button>
-          <button class="secondary" id="downloadCsv">CSVをダウンロード</button>
+          <button class="secondary" id="copy" disabled>出力をコピー</button>
+          <button class="secondary" id="downloadCsv" disabled>CSVをダウンロード</button>
         </div>
         <p class="note">最終的な経費該当性、家事按分、勘定科目は、国税庁情報・会計ソフト・税理士等で確認してください。</p>
       </section>
@@ -541,34 +553,87 @@
   </main>
 
   <script>
-    const sampleText = document.getElementById('items').value;
     const rules = [
-      { category: '旅費交通費', words: ['jr', '電車', '新幹線', 'タクシー', 'バス', '交通', 'suica', 'pasmo', '訪問'], memo: '取引先訪問や業務移動の目的をメモしておく' },
-      { category: '通信費', words: ['docomo', 'ドコモ', 'au', 'softbank', '楽天モバイル', '通信', 'wifi', 'wi-fi', 'インターネット', '光回線'], memo: '私用利用が混ざる場合は家事按分を確認' },
-      { category: '消耗品費', words: ['amazon', '文具', 'ノート', 'コピー', 'プリンタ', 'インク', '備品', '参考書'], memo: '10万円以上の備品は資産計上の可能性を確認' },
-      { category: '新聞図書費', words: ['書籍', '本', 'kindle', '参考書', '新聞', '雑誌'], memo: '業務との関連が分かるタイトルや用途を残す' },
+      { category: '旅費交通費', words: ['jr', '電車', '新幹線', 'タクシー', 'バス', '交通', 'suica', 'pasmo', '訪問', '出張'], memo: '取引先訪問や業務移動の目的をメモしておく' },
+      { category: '通信費', words: ['docomo', 'ドコモ', 'au', 'softbank', '楽天モバイル', '通信', 'wifi', 'wi-fi', 'インターネット', '光回線', 'スマホ'], memo: '私用利用が混ざる場合は家事按分を確認' },
+      { category: '消耗品費', words: ['amazon', '文具', 'ノート', 'コピー', 'プリンタ', 'インク', '備品', 'マウス', 'キーボード'], memo: '10万円以上の備品は資産計上の可能性を確認' },
+      { category: '新聞図書費', words: ['書籍', '本', 'kindle', '参考書', '新聞', '雑誌', 'note'], memo: '業務との関連が分かるタイトルや用途を残す' },
       { category: '会議費', words: ['カフェ', '喫茶', '打ち合わせ', '会議', 'スタバ', 'starbucks', 'ドトール'], memo: '相手・目的・人数をメモしておく' },
       { category: '接待交際費', words: ['会食', '接待', '贈答', '手土産', '懇親'], memo: '相手先・目的・参加者をメモしておく' },
-      { category: '地代家賃', words: ['コワーキング', 'オフィス', '家賃', 'レンタルスペース'], memo: '自宅兼用の場合は按分根拠を残す' },
+      { category: '地代家賃', words: ['コワーキング', 'オフィス', '家賃', 'レンタルスペース', 'シェアオフィス'], memo: '自宅兼用の場合は按分根拠を残す' },
       { category: '支払手数料', words: ['振込', '手数料', 'stripe', 'paypal', '決済'], memo: '売上入金に関する手数料か確認' },
       { category: '水道光熱費', words: ['電気', 'ガス', '水道', '東京電力', '関西電力'], memo: '自宅作業分は按分根拠を確認' },
-      { category: '広告宣伝費', words: ['広告', 'meta', 'google ads', 'x広告', 'チラシ', 'ドメイン'], memo: '案件獲得や集客との関連を残す' },
+      { category: '広告宣伝費', words: ['広告', 'meta', 'google ads', 'x広告', 'チラシ', 'ドメイン', 'サーバー'], memo: '案件獲得や集客との関連を残す' },
       { category: 'ソフトウェア利用料', words: ['adobe', 'creative cloud', 'zoom', 'notion', 'github', 'figma', 'canva', 'chatgpt', 'claude', 'gemini', 'slack'], memo: '業務利用サービスとして契約内容を保存' }
     ];
 
     let rows = [];
     let activeOutput = 'csv';
 
+    const itemsEl = document.getElementById('items');
+    const outputEl = document.getElementById('output');
+    const copyButton = document.getElementById('copy');
+    const downloadButton = document.getElementById('downloadCsv');
+
     function yen(value) {
       return new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY', maximumFractionDigits: 0 }).format(value);
     }
 
+    function splitCsvLine(line) {
+      const cols = [];
+      let current = '';
+      let quoted = false;
+      for (let i = 0; i < line.length; i += 1) {
+        const char = line[i];
+        const next = line[i + 1];
+        if (char === '"' && quoted && next === '"') {
+          current += '"';
+          i += 1;
+        } else if (char === '"') {
+          quoted = !quoted;
+        } else if (char === ',' && !quoted) {
+          cols.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      cols.push(current.trim());
+      return cols;
+    }
+
+    function csvToLines(text) {
+      const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+      if (!lines.length) return [];
+
+      const first = splitCsvLine(lines[0]);
+      const hasHeader = first.some(col => ['日付', 'date', '支払先', '内容', '摘要', '金額', 'amount'].includes(col.toLowerCase()));
+      const dataLines = hasHeader ? lines.slice(1) : lines;
+      const header = hasHeader ? first.map(col => col.toLowerCase()) : [];
+
+      return dataLines.map(line => {
+        const cols = splitCsvLine(line);
+        if (hasHeader) {
+          const get = names => {
+            const index = header.findIndex(col => names.includes(col));
+            return index >= 0 ? cols[index] || '' : '';
+          };
+          const date = get(['日付', 'date']);
+          const payee = get(['支払先', '店名', 'payee', 'merchant']);
+          const detail = get(['内容', '摘要', 'description', 'memo']);
+          const amount = get(['金額', 'amount']);
+          return [date, payee, detail, amount].filter(Boolean).join(' ');
+        }
+        return cols.join(' ');
+      });
+    }
+
     function parseLine(line) {
-      const normalized = line.replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
+      const normalized = line.replace(/\t/g, ' ').replace(/\s+/g, ' ').trim();
       const dateMatch = normalized.match(/(20\d{2}[\/.-]\d{1,2}[\/.-]\d{1,2}|\d{1,2}[\/.-]\d{1,2})/);
-      const amountMatch = normalized.match(/(-?\d{2,})(?!.*\d)/);
+      const amountMatch = normalized.match(/-?\d[\d,]*(?:\.\d+)?(?!.*\d)/);
       const date = dateMatch ? dateMatch[1].replace(/[.-]/g, '/') : '';
-      const amount = amountMatch ? Number(amountMatch[1]) : 0;
+      const amount = amountMatch ? Math.round(Number(amountMatch[0].replace(/,/g, ''))) : 0;
       let description = normalized;
       if (dateMatch) description = description.replace(dateMatch[0], '').trim();
       if (amountMatch) description = description.replace(amountMatch[0], '').trim();
@@ -589,7 +654,7 @@
 
     function buildRows() {
       const privateRate = Number(document.getElementById('privateRate').value);
-      rows = document.getElementById('items').value
+      rows = itemsEl.value
         .split('\n')
         .map(line => line.trim())
         .filter(Boolean)
@@ -604,6 +669,10 @@
 
     function renderTable() {
       const body = document.getElementById('result');
+      if (!rows.length) {
+        body.innerHTML = '<tr><td colspan="5"><div class="empty">明細を入力して「分類する」を押してください。</div></td></tr>';
+        return;
+      }
       body.innerHTML = rows.map(row => `
         <tr>
           <td>${escapeHtml(row.date || '-')}</td>
@@ -632,9 +701,7 @@
         acc[row.category] = (acc[row.category] || 0) + row.expenseAmount;
         return acc;
       }, {});
-      const totals = Object.entries(byCategory)
-        .map(([category, total]) => `- ${category}: ${yen(total)}`)
-        .join('\n');
+      const totals = Object.entries(byCategory).map(([category, total]) => `- ${category}: ${yen(total)}`).join('\n');
       const reviews = rows
         .filter(row => row.confidence === 'low')
         .map(row => `- ${row.date || '日付不明'} ${row.description}: ${row.memo}`)
@@ -673,17 +740,25 @@ ${reviews}
 
 業種: ${document.getElementById('business').selectedOptions[0].textContent}
 明細:
-${document.getElementById('items').value}`;
+${itemsEl.value}`;
     }
 
     function renderOutput() {
-      const output = document.getElementById('output');
-      if (activeOutput === 'csv') output.textContent = csvOutput();
-      if (activeOutput === 'memo') output.textContent = memoOutput();
-      if (activeOutput === 'prompt') output.textContent = promptOutput();
+      if (!rows.length) {
+        outputEl.textContent = '明細を分類すると、ここに出力が表示されます。';
+        copyButton.disabled = true;
+        downloadButton.disabled = true;
+        return;
+      }
+      if (activeOutput === 'csv') outputEl.textContent = csvOutput();
+      if (activeOutput === 'memo') outputEl.textContent = memoOutput();
+      if (activeOutput === 'prompt') outputEl.textContent = promptOutput();
+      copyButton.disabled = false;
+      downloadButton.disabled = false;
     }
 
     function downloadCsv() {
+      if (!rows.length) return;
       const blob = new Blob(['\ufeff' + csvOutput()], { type: 'text/csv;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -702,6 +777,15 @@ ${document.getElementById('items').value}`;
       renderOutput();
     }
 
+    function clearAll() {
+      itemsEl.value = '';
+      document.getElementById('csvFile').value = '';
+      rows = [];
+      renderTable();
+      renderSummary();
+      renderOutput();
+    }
+
     function escapeHtml(value) {
       return String(value)
         .replace(/&/g, '&amp;')
@@ -712,13 +796,20 @@ ${document.getElementById('items').value}`;
     }
 
     document.getElementById('classify').addEventListener('click', classifyAll);
-    document.getElementById('sample').addEventListener('click', () => {
-      document.getElementById('items').value = sampleText;
-      classifyAll();
-    });
-    document.getElementById('clear').addEventListener('click', () => {
-      document.getElementById('items').value = '';
-      classifyAll();
+    document.getElementById('clear').addEventListener('click', clearAll);
+    document.getElementById('csvFile').addEventListener('change', event => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const lines = csvToLines(String(reader.result));
+        itemsEl.value = lines.join('\n');
+        classifyAll();
+      };
+      reader.onerror = () => {
+        outputEl.innerHTML = '<span class="error">CSVファイルを読み込めませんでした。</span>';
+      };
+      reader.readAsText(file, 'utf-8');
     });
     document.querySelectorAll('.tab').forEach(button => {
       button.addEventListener('click', () => {
@@ -728,12 +819,11 @@ ${document.getElementById('items').value}`;
         renderOutput();
       });
     });
-    document.getElementById('copy').addEventListener('click', async () => {
-      await navigator.clipboard.writeText(document.getElementById('output').textContent);
+    copyButton.addEventListener('click', async () => {
+      if (!rows.length) return;
+      await navigator.clipboard.writeText(outputEl.textContent);
     });
-    document.getElementById('downloadCsv').addEventListener('click', downloadCsv);
-
-    classifyAll();
+    downloadButton.addEventListener('click', downloadCsv);
   </script>
 </body>
 </html>
