@@ -63,21 +63,14 @@ dt,
 
 .hero {
   position: relative;
-  min-height: 86svh;
+  min-height: 92svh;
   display: grid;
-  align-items: end;
+  align-items: center;
   overflow: hidden;
   isolation: isolate;
-}
-
-.hero__image {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background-image: url("the-stage-2026-assets/hero-stage.png");
-  background-position: center;
-  background-size: cover;
-  transform: scale(1.02);
+  background:
+    radial-gradient(circle at 72% 28%, rgba(199, 122, 45, 0.18), transparent 36%),
+    linear-gradient(90deg, rgba(22, 36, 38, 0.98), rgba(33, 73, 78, 0.9) 48%, rgba(22, 36, 38, 0.98));
 }
 
 .hero::before {
@@ -86,8 +79,7 @@ dt,
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(90deg, rgba(22, 36, 38, 0.96), rgba(33, 73, 78, 0.76) 36%, rgba(178, 41, 34, 0.14) 66%, rgba(22, 36, 38, 0.52)),
-    linear-gradient(180deg, rgba(22, 36, 38, 0.08), rgba(22, 36, 38, 0.78));
+    linear-gradient(180deg, transparent 0, rgba(0, 0, 0, 0.16) 100%);
 }
 
 .topbar {
@@ -119,9 +111,13 @@ dt,
 }
 
 .hero__content {
-  width: min(var(--max), calc(100% - 40px));
+  width: min(1220px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 120px 0 96px;
+  padding: 120px 0 78px;
+  display: grid;
+  grid-template-columns: minmax(360px, 0.82fr) minmax(420px, 1.18fr);
+  gap: clamp(32px, 5vw, 78px);
+  align-items: center;
 }
 
 .kicker,
@@ -151,6 +147,24 @@ h1 {
   color: #eee7dc;
   font-size: clamp(16px, 1.8vw, 20px);
   line-height: 2;
+}
+
+.hero__button {
+  margin-top: 28px;
+}
+
+.hero__thumb {
+  margin: 0;
+  justify-self: end;
+  width: min(680px, 100%);
+  background: #050505;
+  border: 1px solid rgba(255, 250, 241, 0.2);
+  box-shadow: 30px 30px 0 rgba(223, 233, 229, 0.12), 0 32px 90px rgba(0, 0, 0, 0.36);
+}
+
+.hero__thumb img {
+  width: 100%;
+  height: auto;
 }
 
 .ticket-strip {
@@ -228,31 +242,6 @@ h3 {
 p {
   color: var(--muted);
   font-size: clamp(16px, 1.75vw, 19px);
-}
-
-.official-thumb {
-  width: min(1180px, 100%);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(340px, 1.18fr);
-  gap: clamp(28px, 5vw, 72px);
-  align-items: center;
-}
-
-.official-thumb__copy {
-  max-width: 520px;
-}
-
-.official-thumb__image {
-  margin: 0;
-  background: var(--night);
-  border: 1px solid rgba(32, 35, 34, 0.14);
-  box-shadow: 22px 22px 0 var(--teal-2);
-}
-
-.official-thumb__image img {
-  width: 100%;
-  height: auto;
 }
 
 .letter {
@@ -460,7 +449,7 @@ dd {
 
 @media (max-width: 860px) {
   .hero {
-    min-height: 88svh;
+    min-height: auto;
   }
 
   .topbar {
@@ -469,7 +458,14 @@ dd {
 
   .hero__content {
     width: min(100% - 32px, var(--max));
-    padding: 96px 0 72px;
+    padding: 92px 0 58px;
+    grid-template-columns: 1fr;
+  }
+
+  .hero__thumb {
+    justify-self: start;
+    width: min(620px, 100%);
+    box-shadow: 12px 12px 0 rgba(223, 233, 229, 0.12), 0 22px 60px rgba(0, 0, 0, 0.3);
   }
 
   .ticket-strip {
@@ -483,16 +479,11 @@ dd {
   }
 
   .letter,
-  .official-thumb,
   .backstage,
   .facts,
   .notice,
   .promises {
     grid-template-columns: 1fr;
-  }
-
-  .official-thumb__copy {
-    max-width: 640px;
   }
 
   .letter__body {
