@@ -71,6 +71,7 @@ function renderCards() {
   grid.innerHTML = items.map((item) => {
     const primaryUrl = getPrimaryUrl(item);
     const hasPrompt = Boolean(getUsablePrompt(item));
+    const primaryLabel = item.gemUrl ? "GEMで試す" : primaryUrl ? "URLで体験" : "手順で再現";
     return `
       <button class="case-card ${selectedCase?.id === item.id ? "is-selected" : ""}" type="button" data-case-id="${escapeHtml(item.id)}">
         <span class="case-card-meta">${escapeHtml(item.levelLabel || LEVELS[item.level])} / ${escapeHtml(item.category || "未分類")} / ${escapeHtml(item.tool || "AI")}</span>
@@ -78,7 +79,7 @@ function renderCards() {
         <span class="case-card-summary">${escapeHtml(getSummary(item, 92))}</span>
         <span class="saving-amount">${escapeHtml(item.saving || "削減目安を確認")}</span>
         <span class="card-tags">
-          <em>${primaryUrl ? "URLで体験" : "手順で再現"}</em>
+          <em>${primaryLabel}</em>
           ${hasPrompt ? "<em>プロンプトあり</em>" : ""}
         </span>
         <span class="card-action">試してみる</span>
@@ -142,7 +143,7 @@ function selectCase(caseId, shouldScroll) {
   const primaryUrl = getPrimaryUrl(item);
   if (primaryUrl) {
     link.href = primaryUrl;
-    link.textContent = item.sourceUrl ? "URLを開いて体験する" : "実例画面を見て体験する";
+    link.textContent = item.gemUrl ? "GEMで試す" : item.sourceUrl ? "今すぐ試す" : "実例画面を見て体験する";
     link.hidden = false;
   } else {
     link.hidden = true;
@@ -365,7 +366,7 @@ function inferConditions(item) {
 }
 
 function getPrimaryUrl(item) {
-  return item.sourceUrl || item.media || "";
+  return item.gemUrl || item.sourceUrl || item.media || "";
 }
 
 function getUsablePrompt(item) {

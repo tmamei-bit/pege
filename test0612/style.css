@@ -412,6 +412,10 @@ h1 span {
   font-size: clamp(28px, 3.6vw, 44px);
   line-height: 1.18;
   letter-spacing: 0;
+  line-break: strict;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+  word-break: auto-phrase;
 }
 
 .section-head p:not(.eyebrow) {
@@ -555,6 +559,10 @@ h1 span {
 .case-card strong {
   font-size: 18px;
   line-height: 1.45;
+  line-break: strict;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+  word-break: auto-phrase;
 }
 
 .case-card-summary {
