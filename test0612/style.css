@@ -21,7 +21,7 @@ body {
   font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--ink);
   background:
-    linear-gradient(180deg, rgba(255, 250, 252, .08) 0%, rgba(255, 250, 252, .78) 46%, rgba(255, 250, 252, .86) 100%),
+    linear-gradient(180deg, rgba(255, 250, 252, 0) 0%, rgba(255, 250, 252, .28) 44%, rgba(255, 250, 252, .42) 100%),
     url("header.png") center top / cover fixed no-repeat;
   letter-spacing: 0;
 }
@@ -234,7 +234,7 @@ main {
   inset: auto 0 0;
   height: 130px;
   z-index: -1;
-  background: linear-gradient(0deg, rgba(255, 250, 252, .72) 0%, rgba(255, 250, 252, 0) 100%);
+  background: linear-gradient(0deg, rgba(255, 250, 252, .34) 0%, rgba(255, 250, 252, 0) 100%);
 }
 
 .hero-copy {
@@ -364,12 +364,14 @@ h1 span {
 
 .how-section {
   margin-top: 34px;
-  border: 1px solid rgba(255, 255, 255, .54);
+  border: 1px solid rgba(255, 255, 255, .46);
   border-radius: 26px;
   padding: 30px;
-  background: rgba(255, 250, 252, .72);
+  background:
+    linear-gradient(rgba(255, 250, 252, .50), rgba(255, 250, 252, .50)),
+    url("header.png") center top / cover fixed no-repeat;
   box-shadow: 0 18px 54px rgba(30, 18, 54, .12);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(5px);
 }
 
 .reveal-section,
@@ -431,7 +433,7 @@ h1 span {
   border: 1px solid var(--line);
   border-radius: 18px;
   padding: 22px;
-  background: var(--surface);
+  background: rgba(255, 255, 255, .82);
   box-shadow: 0 10px 30px rgba(35, 20, 70, .06);
 }
 
@@ -461,12 +463,12 @@ h1 span {
 
 .cases-section {
   margin-top: 52px;
-  border: 1px solid rgba(255, 255, 255, .54);
   border-radius: 26px;
   padding: 34px 30px 38px;
-  background: rgba(255, 250, 252, .78);
-  box-shadow: 0 18px 54px rgba(30, 18, 54, .12);
-  backdrop-filter: blur(12px);
+  background:
+    linear-gradient(rgba(255, 250, 252, .30), rgba(255, 250, 252, .30)),
+    url("header.png") center center / cover no-repeat;
+  backdrop-filter: blur(2px);
 }
 
 .level-tabs {
@@ -477,8 +479,8 @@ h1 span {
   gap: 10px;
   padding: 12px 0;
   margin-bottom: 18px;
-  background: rgba(255, 250, 252, .72);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 250, 252, .34);
+  backdrop-filter: blur(5px);
 }
 
 .level-tab {
@@ -532,7 +534,7 @@ h1 span {
   border-radius: 20px;
   padding: 20px;
   color: inherit;
-  background: #fff;
+  background: rgba(255, 255, 255, .78);
   box-shadow: 0 12px 32px rgba(35, 20, 70, .07);
   text-align: left;
   cursor: pointer;
@@ -543,6 +545,7 @@ h1 span {
 .case-card.is-selected {
   transform: translateY(-3px);
   border-color: rgba(109, 76, 255, .38);
+  background: rgba(255, 255, 255, .90);
   box-shadow: 0 18px 42px rgba(35, 20, 70, .14);
 }
 
