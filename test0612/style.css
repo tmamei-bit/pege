@@ -226,6 +226,7 @@ main {
   background:
     linear-gradient(90deg, rgba(15, 10, 25, .72) 0%, rgba(15, 10, 25, .52) 44%, rgba(15, 10, 25, .12) 100%),
     url("header.png") center / cover no-repeat;
+  background-attachment: fixed;
 }
 
 .lp-hero::after {
@@ -273,6 +274,10 @@ h1 {
   font-size: clamp(36px, 5vw, 62px);
   line-height: 1.08;
   letter-spacing: 0;
+}
+
+h1 span {
+  display: block;
 }
 
 .lead {
@@ -360,6 +365,34 @@ h1 {
 
 .how-section {
   padding: 24px 0 72px;
+}
+
+.reveal-section,
+.flow-grid article {
+  transform: translateY(0);
+  transition: transform .58s cubic-bezier(.2, .8, .2, 1);
+}
+
+.reveal-section.is-visible,
+.flow-grid article.is-visible {
+  transform: translateY(0);
+}
+
+.flow-grid article {
+  animation: flow-pop .58s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes flow-pop {
+  from { transform: translateY(22px); }
+  to { transform: translateY(0); }
+}
+
+.flow-grid article:nth-child(2) {
+  transition-delay: .08s;
+}
+
+.flow-grid article:nth-child(3) {
+  transition-delay: .16s;
 }
 
 .section-head {
@@ -855,6 +888,7 @@ pre {
     min-height: 620px;
     padding: 76px 18px 54px;
     background-position: 58% center;
+    background-attachment: scroll;
   }
 
   h1 {

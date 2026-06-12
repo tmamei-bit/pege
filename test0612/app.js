@@ -31,6 +31,7 @@ function init() {
   renderCounts();
   initTabs();
   initDetailActions();
+  initScrollReveal();
   renderCards();
   initFromUrl();
 }
@@ -219,6 +220,26 @@ function closeDashboard() {
   document.querySelector("[data-dashboard-scrim]").hidden = true;
   document.querySelector("[data-dashboard-toggle]").setAttribute("aria-expanded", "false");
   document.body.classList.remove("dashboard-open");
+}
+
+function initScrollReveal() {
+  const targets = document.querySelectorAll(".reveal-section, .flow-grid article");
+  window.setTimeout(() => {
+    targets.forEach((target) => target.classList.add("is-visible"));
+  }, 1200);
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((target) => target.classList.add("is-visible"));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.22 });
+  targets.forEach((target) => observer.observe(target));
 }
 
 function getSavedLogs() {
