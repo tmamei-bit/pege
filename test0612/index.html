@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI節約術 事例体験ページ 仮版</title>
+  <meta name="description" content="AI節約術の活用事例を見て、試して、やってみた内容を投稿できる仮ページ。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="dashboard-shell">
+    <aside class="case-pane" aria-label="活用事例一覧">
+      <div class="case-pane-head">
+        <p class="brand-sub">AI Savings Practice</p>
+        <h1>AI節約術<br>事例体験ページ</h1>
+        <p>活用事例を選ぶと、右側でそのまま試せます。</p>
+      </div>
+
+      <div class="level-tabs" role="tablist" aria-label="レベル別事例">
+        <button class="level-tab is-active" type="button" data-level-tab="beginner">初級</button>
+        <button class="level-tab" type="button" data-level-tab="middle">中級</button>
+        <button class="level-tab" type="button" data-level-tab="advanced">上級</button>
+      </div>
+
+      <div class="case-list" data-case-list></div>
+
+    </aside>
+
+    <section class="experience-pane" aria-live="polite">
+      <div class="overview-panel" data-overview-panel>
+        <span class="eyebrow">仮ページ</span>
+        <h2>見て終わりじゃなく、<br>その場でAI節約を試せる</h2>
+        <p class="overview-lead">みんなの節約事例を、ただ読むだけで終わらせません。</p>
+        <p class="overview-copy">完成URLや実例画面を先に触って、何をAIに頼んだのかを分解し、自分の生活に置き換えて試すためのページです。</p>
+        <div class="overview-grid">
+          <article>
+            <strong>1. まず触る</strong>
+            <p>完成URLや実例画面から、AIで何ができるかを先に体験。</p>
+          </article>
+          <article>
+            <strong>2. 作り方を見る</strong>
+            <p>目的、条件、出力形式に分けて、真似できる形に整理。</p>
+          </article>
+          <article>
+            <strong>3. やってみる</strong>
+            <p>自分で試した結果を投稿して、同じ事例に紐づける。</p>
+          </article>
+        </div>
+      </div>
+
+      <article class="case-detail-panel" data-case-detail hidden>
+        <div class="detail-head">
+          <div>
+            <span class="eyebrow" data-detail-level></span>
+            <h2 data-detail-title></h2>
+            <p data-detail-summary></p>
+            <div class="hero-cta-row" data-detail-link-hero-wrap hidden>
+              <a class="hero-source-link" href="#" target="_blank" rel="noopener" data-detail-link-hero>URLを開いて体験する</a>
+            </div>
+          </div>
+          <button class="close-detail" type="button" data-close-detail>概要に戻す</button>
+        </div>
+
+        <section class="detail-block">
+          <h3>まず試す</h3>
+          <p data-detail-try></p>
+          <div class="source-link-wrap" data-detail-link-wrap hidden>
+            <a class="source-link" href="#" target="_blank" rel="noopener" data-detail-link>共有URLを開く</a>
+          </div>
+          <div class="prompt-box compact" data-prompt-box>
+            <button class="copy-btn" type="button" data-copy-detail>コピー</button>
+            <pre data-detail-prompt></pre>
+          </div>
+        </section>
+
+        <section class="detail-block">
+          <h3>この事例で何ができる？</h3>
+          <div class="article-flow" data-detail-story></div>
+        </section>
+
+        <section class="detail-block">
+          <h3>真似して作る手順</h3>
+          <div class="build-steps" data-detail-steps></div>
+        </section>
+
+        <section class="detail-block">
+          <h3>自分でやってみる</h3>
+          <textarea data-demo-input></textarea>
+          <div class="action-row">
+            <button class="btn btn-primary" type="button" data-demo-run>試してみる</button>
+          </div>
+          <div class="demo-result" data-demo-result>入力してボタンを押すと、返答イメージが表示されます。</div>
+        </section>
+
+        <section class="detail-block">
+          <h3>やってみたを提出する</h3>
+          <form class="inline-form" data-practice-form>
+            <input type="hidden" name="caseId" data-form-case-id>
+            <label>
+              名前
+              <input name="name" placeholder="例: Mさん">
+            </label>
+            <label>
+              やってみてどうでしたか
+              <textarea name="note" required placeholder="例: 冷蔵庫の食材を入れたら、献立候補が出ました。"></textarea>
+            </label>
+            <label>
+              自分用に変えたところ
+              <textarea name="tweak" placeholder="例: 子ども向け、15分以内、買い足しなしを足しました。"></textarea>
+            </label>
+            <button class="btn btn-primary" type="submit">仮投稿する</button>
+            <p class="form-help" data-form-status></p>
+          </form>
+        </section>
+
+        <section class="detail-block">
+          <h3>この事例をやってみた人</h3>
+          <div class="log-list" data-log-list></div>
+        </section>
+      </article>
+    </section>
+  </main>
+
+  <script src="cases-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
