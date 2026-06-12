@@ -129,7 +129,10 @@ function selectCase(caseId, shouldScroll) {
   document.querySelector("[data-detail-level]").textContent = `${item.levelLabel || LEVELS[item.level]} / ${item.category || "未分類"} / ${item.tool || "AI"}`;
   document.querySelector("[data-detail-title]").textContent = item.title;
   document.querySelector("[data-detail-summary]").textContent = getSummary(item, 180);
-  document.querySelector("[data-detail-saving]").textContent = item.saving || "事例内で確認";
+  const savingBox = document.querySelector("[data-detail-saving]").closest(".saving-box");
+  const savingText = item.saving || "事例内で確認";
+  savingBox.classList.toggle("is-long", savingText.length > 22);
+  document.querySelector("[data-detail-saving]").textContent = savingText;
   document.querySelector("[data-detail-try]").textContent = getTryText(item);
   document.querySelector("[data-detail-story]").innerHTML = buildStoryHtml(item);
   document.querySelector("[data-detail-steps]").innerHTML = buildRecipeSteps(item).map((step, index) => `
