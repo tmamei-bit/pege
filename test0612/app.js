@@ -1,5 +1,5 @@
 const CASES = Array.isArray(window.AI_SAVINGS_CASES) ? window.AI_SAVINGS_CASES : [];
-const STORAGE_KEY = "ai-savings-test0612-logs";
+const STORAGE_KEY = "ai-savings-test0612-logs-v2";
 const LEVELS = {
   beginner: "初級",
   middle: "中級",
@@ -9,22 +9,7 @@ const LEVELS = {
 let activeLevel = "beginner";
 let selectedCase = null;
 
-const seedLogs = {
-  "case-13": [
-    {
-      name: "macoさん",
-      note: "調理家電を買う前に、自分の生活で本当に使うか確認できました。",
-      tweak: "直近1週間の自炊回数と、洗い物が苦手なことを条件に入れました。"
-    }
-  ],
-  "case-14": [
-    {
-      name: "macoさん",
-      note: "AIサブスクの役割が重なっていることに気づき、1本化できました。",
-      tweak: "画像生成と検索を無料ツールで代替できるかも確認しました。"
-    }
-  ]
-};
+const seedLogs = {};
 
 function init() {
   document.querySelector("[data-total-count]").textContent = CASES.length;
@@ -338,7 +323,6 @@ function isLineStampCase(item) {
 }
 
 function buildLineStampArticleHtml(item) {
-  const gemUrl = getPrimaryUrl(item);
   const stampIdeas = [
     ["おはよ", "布団から頭だけ出した、眠そうな猫", "朝の第一声"],
     ["りょ", "真顔でサムズアップする猫", "了解・確認"],
@@ -356,7 +340,6 @@ function buildLineStampArticleHtml(item) {
         <p class="line-kicker">この事例で体験すること</p>
         <h3>GEMに5つ答えるだけで、家族用LINEスタンプの企画書ができます。</h3>
         <p>「LINEスタンプを自作したら、スタンプのサブスクをやめられるかも」という小さな思いつきを、GEMがスタンプ案、画像生成プロンプト、Canvaでの作り方、LINE申請の流れまで分解してくれます。</p>
-        ${gemUrl ? `<a class="line-primary-link" href="${escapeHtml(gemUrl)}" target="_blank" rel="noopener">GEMで今すぐ試す</a>` : ""}
       </section>
 
       <section class="line-card">
@@ -372,17 +355,6 @@ function buildLineStampArticleHtml(item) {
           <span>使えるツールの経験</span>
           <span>公開するか、家族用にするか</span>
         </div>
-      </section>
-
-      <section class="line-shot-grid">
-        <figure class="line-shot">
-          <img src="assets/line-stamp-guide/page-02.png" alt="GEMが節約額とスタンプ案を整理している画面">
-          <figcaption>GEMは節約額の見込みと、8個分のスタンプ案を表で出します。</figcaption>
-        </figure>
-        <figure class="line-shot">
-          <img src="assets/line-stamp-guide/page-03.png" alt="LINEスタンプ用の画像生成プロンプトが表示されている画面">
-          <figcaption>画像生成では文字を入れず、キャラクターだけ作る指示にします。</figcaption>
-        </figure>
       </section>
 
       <section class="line-card">
@@ -414,14 +386,10 @@ function buildLineStampArticleHtml(item) {
         </article>
       </section>
 
-      <section class="line-shot-grid">
+      <section class="line-shot-grid line-shot-grid-single">
         <figure class="line-shot">
-          <img src="assets/line-stamp-guide/page-04.png" alt="CanvaとLINE Stamp Makerで作る手順の説明画面">
-          <figcaption>Canvaで文字入れ、LINE Stamp Makerで登録するところまでGEMが案内します。</figcaption>
-        </figure>
-        <figure class="line-shot">
-          <img src="assets/line-stamp-guide/page-06.png" alt="LINEスタンプメーカーのスマホ画面">
-          <figcaption>スマホ側では、スタンプ情報や販売設定を確認しながら進めます。</figcaption>
+          <img src="assets/line-stamp-guide/line-stamp-maker-closeup.png" alt="LINEスタンプメーカーのプレビューと販売情報のスマホ画面">
+          <figcaption>最後はLINE Stamp Makerで、プレビューと販売情報を確認して申請します。</figcaption>
         </figure>
       </section>
     </div>
