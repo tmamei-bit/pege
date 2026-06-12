@@ -134,13 +134,17 @@ function selectCase(caseId, shouldScroll) {
   savingBox.classList.toggle("is-long", savingText.length > 22);
   document.querySelector("[data-detail-saving]").textContent = savingText;
   document.querySelector("[data-detail-try]").textContent = getTryText(item);
-  document.querySelector("[data-detail-story]").innerHTML = buildStoryHtml(item);
-  document.querySelector("[data-detail-steps]").innerHTML = buildRecipeSteps(item).map((step, index) => `
-    <div class="mini-step">
-      <span>${index + 1}</span>
-      <p>${escapeHtml(step)}</p>
-    </div>
-  `).join("");
+  document.querySelector("[data-detail-story]").innerHTML = isLineStampCase(item)
+    ? buildLineStampArticleHtml(item)
+    : buildStoryHtml(item);
+  document.querySelector("[data-detail-steps]").innerHTML = isLineStampCase(item)
+    ? buildLineStampStepsHtml()
+    : buildRecipeSteps(item).map((step, index) => `
+      <div class="mini-step">
+        <span>${index + 1}</span>
+        <p>${escapeHtml(step)}</p>
+      </div>
+    `).join("");
 
   const link = document.querySelector("[data-detail-link]");
   const primaryUrl = getPrimaryUrl(item);
@@ -325,6 +329,125 @@ function buildStoryHtml(item) {
     </div>
     <div class="story-body">
       ${detailParts.map((part) => `<p>${escapeHtml(part)}</p>`).join("")}
+    </div>
+  `;
+}
+
+function isLineStampCase(item) {
+  return item.id === "case-01";
+}
+
+function buildLineStampArticleHtml(item) {
+  const gemUrl = getPrimaryUrl(item);
+  const stampIdeas = [
+    ["おはよ", "布団から頭だけ出した、眠そうな猫", "朝の第一声"],
+    ["りょ", "真顔でサムズアップする猫", "了解・確認"],
+    ["いまから帰る", "荷物を背負って早歩きする猫", "帰宅連絡"],
+    ["おつかれさま", "お茶をすすりながら力が抜けた猫", "仕事や学校終わり"],
+    ["ごはん何？", "空のお皿と箸を持つ猫", "夕方の定番連絡"],
+    ["ありがとう", "深々とおじぎする猫", "感謝を伝える"],
+    ["ごめん…", "壁のすき間からそっと覗く猫", "遅れた時やミスした時"],
+    ["おやすみ", "アイマスクで爆睡する猫", "1日の終わり"]
+  ];
+
+  return `
+    <div class="line-article">
+      <section class="line-lead">
+        <p class="line-kicker">この事例で体験すること</p>
+        <h3>GEMに5つ答えるだけで、家族用LINEスタンプの企画書ができます。</h3>
+        <p>「LINEスタンプを自作したら、スタンプのサブスクをやめられるかも」という小さな思いつきを、GEMがスタンプ案、画像生成プロンプト、Canvaでの作り方、LINE申請の流れまで分解してくれます。</p>
+        ${gemUrl ? `<a class="line-primary-link" href="${escapeHtml(gemUrl)}" target="_blank" rel="noopener">GEMで今すぐ試す</a>` : ""}
+      </section>
+
+      <section class="line-card">
+        <div>
+          <p class="line-kicker">最初に答えること</p>
+          <h4>いきなりプロンプトを書く必要はありません。</h4>
+          <p>このGEMは、最初に5つだけ聞いてきます。自分の状況を答えると、家族で使いやすいスタンプ案に変換されます。</p>
+        </div>
+        <div class="line-question-grid">
+          <span>今スタンプにいくら使っているか</span>
+          <span>よく使う言葉や雰囲気</span>
+          <span>作りたいキャラクター</span>
+          <span>使えるツールの経験</span>
+          <span>公開するか、家族用にするか</span>
+        </div>
+      </section>
+
+      <section class="line-shot-grid">
+        <figure class="line-shot">
+          <img src="assets/line-stamp-guide/page-02.png" alt="GEMが節約額とスタンプ案を整理している画面">
+          <figcaption>GEMは節約額の見込みと、8個分のスタンプ案を表で出します。</figcaption>
+        </figure>
+        <figure class="line-shot">
+          <img src="assets/line-stamp-guide/page-03.png" alt="LINEスタンプ用の画像生成プロンプトが表示されている画面">
+          <figcaption>画像生成では文字を入れず、キャラクターだけ作る指示にします。</figcaption>
+        </figure>
+      </section>
+
+      <section class="line-card">
+        <p class="line-kicker">出てくるスタンプ案の例</p>
+        <h4>家族LINEで本当に使う言葉に寄せるのがポイントです。</h4>
+        <div class="stamp-table">
+          ${stampIdeas.map(([label, image, scene]) => `
+            <article>
+              <strong>${escapeHtml(label)}</strong>
+              <span>${escapeHtml(image)}</span>
+              <small>${escapeHtml(scene)}</small>
+            </article>
+          `).join("")}
+        </div>
+      </section>
+
+      <section class="line-card line-points">
+        <article>
+          <strong>画像生成AI</strong>
+          <p>白背景、ゆるい手書き風、文字なしで猫のイラストを作ります。文字までAIに入れさせると崩れやすいので、ここでは絵だけ作ります。</p>
+        </article>
+        <article>
+          <strong>Canva</strong>
+          <p>370 x 320 pxで作成し、画像を配置してから「おはよ」「りょ」などの文字を後から入れます。最後は透過PNGで書き出します。</p>
+        </article>
+        <article>
+          <strong>LINE Stamp Maker</strong>
+          <p>8枚アップロードして、ショップ非公開・無料ダウンロード設定にします。家族だけで使うなら公開販売を目指さなくて大丈夫です。</p>
+        </article>
+      </section>
+
+      <section class="line-shot-grid">
+        <figure class="line-shot">
+          <img src="assets/line-stamp-guide/page-04.png" alt="CanvaとLINE Stamp Makerで作る手順の説明画面">
+          <figcaption>Canvaで文字入れ、LINE Stamp Makerで登録するところまでGEMが案内します。</figcaption>
+        </figure>
+        <figure class="line-shot">
+          <img src="assets/line-stamp-guide/page-06.png" alt="LINEスタンプメーカーのスマホ画面">
+          <figcaption>スマホ側では、スタンプ情報や販売設定を確認しながら進めます。</figcaption>
+        </figure>
+      </section>
+    </div>
+  `;
+}
+
+function buildLineStampStepsHtml() {
+  const steps = [
+    ["GEMを開いて5つ答える", "今のスタンプ代、よく使う言葉、作りたいキャラ、使えるツール、公開範囲を入力します。"],
+    ["8個のスタンプ案を選ぶ", "GEMが出した案から、家族LINEで本当に使う言葉だけ残します。使わない言葉はここで差し替えます。"],
+    ["画像生成AIでキャラを作る", "文字は入れず、白背景の猫イラストだけ作ります。文字を入れない方が仕上がりを直しやすいです。"],
+    ["Canvaで文字を入れる", "370 x 320 pxのキャンバスに画像を置き、手書き風フォントで文字を入れて透過PNGにします。"],
+    ["LINE Stamp Makerに登録する", "8枚をアップロードし、家族用ならショップ非公開・無料ダウンロード設定で申請します。"]
+  ];
+
+  return `
+    <div class="line-step-list">
+      ${steps.map(([title, body], index) => `
+        <article class="line-step">
+          <span>${index + 1}</span>
+          <div>
+            <h4>${escapeHtml(title)}</h4>
+            <p>${escapeHtml(body)}</p>
+          </div>
+        </article>
+      `).join("")}
     </div>
   `;
 }

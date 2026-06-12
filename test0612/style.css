@@ -742,9 +742,224 @@ h1 span {
   margin-bottom: 0;
 }
 
+.line-article {
+  max-width: 980px;
+  color: #31283f;
+  line-height: 1.85;
+  line-break: strict;
+  overflow-wrap: break-word;
+  word-break: auto-phrase;
+  text-wrap: pretty;
+}
+
+.line-article h3,
+.line-article h4 {
+  margin: 0;
+  color: #1f1731;
+  line-height: 1.45;
+  letter-spacing: 0;
+  line-break: strict;
+  overflow-wrap: break-word;
+  word-break: auto-phrase;
+  text-wrap: pretty;
+}
+
+.line-article p {
+  margin: 0;
+}
+
+.line-kicker {
+  margin: 0 0 8px;
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.line-lead,
+.line-card {
+  display: grid;
+  gap: 14px;
+  border-radius: 18px;
+  padding: 22px;
+  background: #f9f6ff;
+}
+
+.line-lead {
+  margin-bottom: 18px;
+  background: #fff8e1;
+}
+
+.line-lead h3 {
+  font-size: clamp(22px, 2.4vw, 32px);
+}
+
+.line-card {
+  margin: 18px 0;
+}
+
+.line-primary-link {
+  width: fit-content;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 20px;
+  color: #fff;
+  background: var(--red);
+  font-size: 14px;
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 0 12px 26px rgba(225, 29, 72, .2);
+}
+
+.line-question-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.line-question-grid span {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  border-radius: 14px;
+  padding: 12px;
+  color: #3a2b4f;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.55;
+}
+
+.line-shot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 18px 0;
+}
+
+.line-shot {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 12px;
+  background: #fff;
+}
+
+.line-shot img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  background: #f5f2fb;
+}
+
+.line-shot figcaption {
+  margin-top: 10px;
+  color: #5d5468;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.stamp-table {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stamp-table article {
+  display: grid;
+  gap: 6px;
+  border: 1px solid #eee7ff;
+  border-radius: 14px;
+  padding: 14px;
+  background: #fff;
+}
+
+.stamp-table strong {
+  color: var(--red);
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.stamp-table span {
+  color: #332a3f;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.stamp-table small {
+  color: #6a6175;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.line-points {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.line-points article {
+  display: grid;
+  gap: 8px;
+  border-radius: 14px;
+  padding: 16px;
+  background: #fff;
+}
+
+.line-points strong {
+  color: #1f1731;
+  font-size: 16px;
+}
+
+.line-points p {
+  color: #534a60;
+  font-size: 14px;
+}
+
 .build-steps {
   display: grid;
   gap: 12px;
+}
+
+.line-step-list {
+  display: grid;
+  gap: 12px;
+}
+
+.line-step {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 14px;
+  align-items: start;
+  border-radius: 16px;
+  padding: 18px;
+  background: #fbf8ff;
+}
+
+.line-step span {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--purple);
+  font-weight: 900;
+}
+
+.line-step h4 {
+  margin: 0 0 6px;
+  color: #1f1731;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.line-step p {
+  margin: 0;
+  color: #4d455d;
+  line-height: 1.8;
 }
 
 .mini-step {
@@ -892,7 +1107,10 @@ pre {
 
   .case-grid,
   .flow-grid,
-  .story-grid {
+  .story-grid,
+  .line-question-grid,
+  .stamp-table,
+  .line-points {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -938,7 +1156,11 @@ pre {
 
   .case-grid,
   .flow-grid,
-  .story-grid {
+  .story-grid,
+  .line-question-grid,
+  .line-shot-grid,
+  .stamp-table,
+  .line-points {
     grid-template-columns: 1fr;
   }
 
@@ -953,10 +1175,25 @@ pre {
 
   .manual-hero,
   .manual-block {
-    padding: 22px;
+    padding: 20px;
   }
 
   .case-card {
     min-height: 280px;
+  }
+
+  .line-lead,
+  .line-card {
+    padding: 18px;
+  }
+
+  .line-step {
+    grid-template-columns: 40px 1fr;
+    padding: 16px;
+  }
+
+  .line-step span {
+    width: 40px;
+    height: 40px;
   }
 }
