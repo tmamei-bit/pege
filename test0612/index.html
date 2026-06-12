@@ -11,6 +11,28 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <button class="dashboard-toggle" type="button" data-dashboard-toggle aria-controls="case-dashboard" aria-expanded="false">
+    <span></span>
+    事例メニュー
+  </button>
+  <div class="dashboard-scrim" data-dashboard-scrim hidden></div>
+  <aside class="case-dashboard" id="case-dashboard" data-dashboard hidden>
+    <div class="dashboard-head">
+      <div>
+        <p class="brand-sub">AI Savings Practice</p>
+        <h2>事例ダッシュボード</h2>
+      </div>
+      <button class="dashboard-close" type="button" data-dashboard-close aria-label="閉じる">×</button>
+    </div>
+    <p class="dashboard-lead">左のメニューで事例を選ぶと、ページ下に体験用のトリセツが開きます。</p>
+    <div class="dashboard-tabs" role="tablist" aria-label="メニュー内レベル別事例">
+      <button class="dashboard-tab is-active" type="button" data-level-tab="beginner">初級 <span data-count="beginner"></span></button>
+      <button class="dashboard-tab" type="button" data-level-tab="middle">中級 <span data-count="middle"></span></button>
+      <button class="dashboard-tab" type="button" data-level-tab="advanced">上級 <span data-count="advanced"></span></button>
+    </div>
+    <div class="dashboard-list" data-dashboard-list></div>
+  </aside>
+
   <main>
     <section class="lp-hero">
       <div class="hero-copy">
@@ -22,15 +44,12 @@
           <a class="btn btn-secondary" href="#how">このページの使い方</a>
         </div>
       </div>
-      <div class="hero-visual" aria-hidden="true">
+      <div class="hero-photo" aria-hidden="true">
         <div class="saving-ticket">
           <span>今ある事例</span>
           <strong data-total-count>39</strong>
           <em>まず試せる節約アイデア</em>
         </div>
-        <div class="hero-mini-card card-a">URLを開く</div>
-        <div class="hero-mini-card card-b">真似して作る</div>
-        <div class="hero-mini-card card-c">やってみた投稿</div>
       </div>
     </section>
 
@@ -66,9 +85,9 @@
       </div>
 
       <div class="level-tabs" role="tablist" aria-label="レベル別事例">
-        <button class="level-tab is-active" type="button" data-level-tab="beginner">初級 <span data-count="beginner"></span></button>
-        <button class="level-tab" type="button" data-level-tab="middle">中級 <span data-count="middle"></span></button>
-        <button class="level-tab" type="button" data-level-tab="advanced">上級 <span data-count="advanced"></span></button>
+        <button class="level-tab is-active" type="button" data-level-tab="beginner">初級 <span data-count-main="beginner"></span></button>
+        <button class="level-tab" type="button" data-level-tab="middle">中級 <span data-count-main="middle"></span></button>
+        <button class="level-tab" type="button" data-level-tab="advanced">上級 <span data-count-main="advanced"></span></button>
       </div>
 
       <div class="case-grid" data-case-grid></div>

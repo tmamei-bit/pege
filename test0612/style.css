@@ -30,19 +30,216 @@ main {
   overflow: hidden;
 }
 
+.dashboard-toggle {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 40;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(255, 255, 255, .24);
+  border-radius: 999px;
+  padding: 0 16px;
+  color: #fff;
+  background: rgba(31, 23, 49, .88);
+  box-shadow: 0 12px 32px rgba(20, 12, 35, .24);
+  backdrop-filter: blur(14px);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.dashboard-toggle span,
+.dashboard-toggle span::before,
+.dashboard-toggle span::after {
+  width: 16px;
+  height: 2px;
+  display: block;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.dashboard-toggle span {
+  position: relative;
+}
+
+.dashboard-toggle span::before,
+.dashboard-toggle span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.dashboard-toggle span::before { top: -5px; }
+.dashboard-toggle span::after { top: 5px; }
+
+.dashboard-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(17, 12, 28, .34);
+  backdrop-filter: blur(3px);
+}
+
+.case-dashboard {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 60;
+  width: min(420px, calc(100vw - 28px));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 18px 0 52px rgba(25, 14, 50, .22);
+  overflow-y: auto;
+}
+
+.dashboard-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.brand-sub {
+  margin: 0 0 4px;
+  color: var(--purple);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.dashboard-head h2 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.dashboard-close {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: #1f1731;
+  font: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dashboard-lead {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.dashboard-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  padding: 6px;
+  border-radius: 999px;
+  background: #f2edf9;
+}
+
+.dashboard-tab {
+  min-height: 38px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.dashboard-tab.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+}
+
+.dashboard-tab span {
+  margin-left: 4px;
+}
+
+.dashboard-list {
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard-case {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  color: inherit;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(35, 20, 70, .06);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dashboard-case:hover,
+.dashboard-case.is-selected {
+  border-color: rgba(109, 76, 255, .36);
+  background: #fbf8ff;
+}
+
+.dashboard-case span {
+  color: var(--purple);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.dashboard-case strong {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.dashboard-case em {
+  color: var(--red);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .lp-hero {
-  min-height: 620px;
+  position: relative;
+  min-height: 680px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
   gap: 42px;
   align-items: center;
-  width: min(1180px, calc(100% - 36px));
-  margin: 0 auto;
-  padding: 70px 0 56px;
+  width: 100%;
+  margin: 0;
+  padding: 92px max(34px, calc((100vw - 1180px) / 2)) 70px;
+  isolation: isolate;
+  background:
+    linear-gradient(90deg, rgba(15, 10, 25, .72) 0%, rgba(15, 10, 25, .52) 44%, rgba(15, 10, 25, .12) 100%),
+    url("header.png") center / cover no-repeat;
+}
+
+.lp-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 130px;
+  z-index: -1;
+  background: linear-gradient(0deg, #fffafc 0%, rgba(255, 250, 252, 0) 100%);
 }
 
 .hero-copy {
   max-width: 720px;
+  color: #fff;
 }
 
 .eyebrow {
@@ -80,7 +277,7 @@ h1 {
 
 .lead {
   max-width: 660px;
-  color: #4e465c;
+  color: rgba(255, 255, 255, .84);
   font-size: 17px;
   line-height: 1.9;
 }
@@ -118,21 +315,17 @@ h1 {
   background: #f0ebff;
 }
 
-.hero-visual {
+.hero-photo {
   position: relative;
   min-height: 430px;
-  border-radius: 28px;
-  background:
-    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, .84), transparent 26%),
-    radial-gradient(circle at 78% 16%, rgba(255, 200, 87, .58), transparent 24%),
-    linear-gradient(135deg, #ff6b92 0%, #755cff 52%, #12b886 100%);
-  box-shadow: var(--shadow);
 }
 
 .saving-ticket {
   position: absolute;
-  inset: 78px 54px auto;
-  min-height: 210px;
+  right: 0;
+  bottom: 20px;
+  width: min(300px, 86%);
+  min-height: 190px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -140,8 +333,9 @@ h1 {
   border-radius: 22px;
   padding: 28px;
   color: #fff;
-  background: rgba(255, 255, 255, .18);
+  background: rgba(31, 23, 49, .44);
   backdrop-filter: blur(14px);
+  box-shadow: 0 18px 48px rgba(15, 10, 25, .28);
 }
 
 .saving-ticket span,
@@ -156,24 +350,6 @@ h1 {
   font-size: 86px;
   line-height: 1;
 }
-
-.hero-mini-card {
-  position: absolute;
-  min-height: 48px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  padding: 0 18px;
-  color: #271d38;
-  background: #fff;
-  font-size: 14px;
-  font-weight: 900;
-  box-shadow: 0 14px 30px rgba(35, 20, 70, .18);
-}
-
-.card-a { left: 28px; bottom: 84px; }
-.card-b { right: 30px; bottom: 118px; }
-.card-c { left: 82px; bottom: 28px; }
 
 .how-section,
 .cases-section,
@@ -652,8 +828,8 @@ pre {
     grid-template-columns: 1fr;
   }
 
-  .hero-visual {
-    min-height: 360px;
+  .hero-photo {
+    min-height: 220px;
   }
 
   .case-grid,
@@ -676,21 +852,25 @@ pre {
   }
 
   .lp-hero {
-    min-height: auto;
-    padding-top: 44px;
+    min-height: 620px;
+    padding: 76px 18px 54px;
+    background-position: 58% center;
   }
 
   h1 {
     font-size: 38px;
   }
 
-  .hero-visual {
-    min-height: 320px;
-    border-radius: 22px;
+  .hero-photo {
+    min-height: 120px;
   }
 
   .saving-ticket {
-    inset: 54px 26px auto;
+    position: relative;
+    width: 100%;
+    right: auto;
+    bottom: auto;
+    margin-top: 18px;
   }
 
   .saving-ticket strong {

@@ -37,8 +37,10 @@ function init() {
 
 function renderCounts() {
   Object.keys(LEVELS).forEach((level) => {
-    const target = document.querySelector(`[data-count="${level}"]`);
-    if (target) target.textContent = CASES.filter((item) => item.level === level).length;
+    const count = CASES.filter((item) => item.level === level).length;
+    document.querySelectorAll(`[data-count="${level}"], [data-count-main="${level}"]`).forEach((target) => {
+      target.textContent = count;
+    });
   });
 }
 
@@ -48,12 +50,17 @@ function initTabs() {
       activeLevel = tab.dataset.levelTab;
       selectedCase = null;
       document.querySelector("[data-case-detail]").hidden = true;
-      document.querySelectorAll("[data-level-tab]").forEach((item) => {
-        item.classList.toggle("is-active", item.dataset.levelTab === activeLevel);
-      });
+      syncActiveTabs();
       renderCards();
+      renderDashboardList();
     });
   });
+}
+
+function syncActiveTabs() {
+  document.querySelectorAll("[data-level-tab]").forEach((item) => {
+        item.classList.toggle("is-active", item.dataset.levelTab === activeLevel);
+      });
 }
 
 function renderCards() {
@@ -80,6 +87,27 @@ function renderCards() {
 
   grid.querySelectorAll("[data-case-id]").forEach((card) => {
     card.addEventListener("click", () => selectCase(card.dataset.caseId, true));
+  });
+  renderDashboardList();
+}
+
+function renderDashboardList() {
+  const list = document.querySelector("[data-dashboard-list]");
+  if (!list) return;
+  const items = CASES.filter((item) => item.level === activeLevel);
+  list.innerHTML = items.map((item) => `
+    <button class="dashboard-case ${selectedCase?.id === item.id ? "is-selected" : ""}" type="button" data-dashboard-case-id="${escapeHtml(item.id)}">
+      <span>${escapeHtml(item.category || "未分類")} / ${escapeHtml(item.tool || "AI")}</span>
+      <strong>${escapeHtml(item.title)}</strong>
+      <em>${escapeHtml(item.saving || "削減目安を確認")}</em>
+    </button>
+  `).join("");
+
+  list.querySelectorAll("[data-dashboard-case-id]").forEach((button) => {
+    button.addEventListener("click", () => {
+      closeDashboard();
+      selectCase(button.dataset.dashboardCaseId, true);
+    });
   });
 }
 
@@ -139,6 +167,17 @@ function selectCase(caseId, shouldScroll) {
 }
 
 function initDetailActions() {
+  const toggle = document.querySelector("[data-dashboard-toggle]");
+  const dashboard = document.querySelector("[data-dashboard]");
+  const scrim = document.querySelector("[data-dashboard-scrim]");
+  toggle.addEventListener("click", () => {
+    const isOpen = !dashboard.hidden;
+    if (isOpen) closeDashboard();
+    else openDashboard();
+  });
+  document.querySelector("[data-dashboard-close]").addEventListener("click", closeDashboard);
+  scrim.addEventListener("click", closeDashboard);
+
   document.querySelector("[data-copy-detail]").addEventListener("click", async (event) => {
     const text = document.querySelector("[data-detail-prompt]").textContent;
     if (!text) return;
@@ -166,6 +205,20 @@ function initDetailActions() {
     status.textContent = "👏 投稿しました。この事例の「やってみた人」に反映されています。";
     setTimeout(() => { status.textContent = ""; }, 3200);
   });
+}
+
+function openDashboard() {
+  document.querySelector("[data-dashboard]").hidden = false;
+  document.querySelector("[data-dashboard-scrim]").hidden = false;
+  document.querySelector("[data-dashboard-toggle]").setAttribute("aria-expanded", "true");
+  document.body.classList.add("dashboard-open");
+}
+
+function closeDashboard() {
+  document.querySelector("[data-dashboard]").hidden = true;
+  document.querySelector("[data-dashboard-scrim]").hidden = true;
+  document.querySelector("[data-dashboard-toggle]").setAttribute("aria-expanded", "false");
+  document.body.classList.remove("dashboard-open");
 }
 
 function getSavedLogs() {
